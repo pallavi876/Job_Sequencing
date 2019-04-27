@@ -1,0 +1,101 @@
+#include<stdio.h>
+
+struct job
+{
+    int no;
+    int pro;
+    int dead;
+}j[20];
+
+void main()
+{
+    int seq[10]={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},njob,profit=0,i,k,c,p,temp,empty;
+    printf("\nEnter the number of jobs:");
+    scanf("%d",&njob);
+    for(i=0;i<njob;i++)
+    {
+        j[i].no=i+1;
+        printf("\nEnter profit of J%d:",i+1);
+        scanf("%d",&j[i].pro);
+        printf("\nEnter deadline of J%d:",i+1);
+        scanf("%d",&j[i].dead);
+    }
+
+    //Sorting logic
+    for(i=0;i<njob;i++)
+    {
+        for(k=0;k<njob-i-1;k++)
+        {
+            if(j[k].pro<j[k+1].pro)
+            {
+                //Swapping profit
+                temp=j[k].pro;
+                j[k].pro=j[k+1].pro;
+                j[k+1].pro=temp;
+
+                //Swapping no
+                temp=j[k].no;
+                j[k].no=j[k+1].no;
+                j[k+1].no=temp;
+
+
+                //Swapping deadlines
+                temp=j[k].dead;
+                j[k].dead=j[k+1].dead;
+                j[k+1].dead=temp;
+
+
+            }
+        }
+    }
+
+    //Display
+    printf("\nNo\tPro\tDead");
+    for(i=0;i<njob;i++)
+    {
+        printf("\n%d\t%d\t%d",j[i].no,j[i].pro,j[i].dead);
+    }
+
+    //Main logic
+    for(i=0;i<njob;i++)
+    {
+        if(seq[j[i].dead-1]==-1)
+        {
+            seq[j[i].dead-1]=j[i].no;
+            printf("\nProfit=%d\t Deadline=%d",j[i].pro,j[i].dead);
+            profit=profit+j[i].pro;
+        }
+
+        else
+        {
+            empty=100,k=j[i].dead;
+            p=k-1;
+            while(p>=0)
+            {
+                if(seq[p]==-1)
+                {
+                    empty=p;
+                    break;
+                }
+                p--;
+            }
+
+                if(empty==100)
+                    continue;
+
+                else
+                {
+                    seq[p]=j[i].no;
+                    profit=profit+j[i].pro;
+                }
+
+        }
+    }
+
+        printf("\nTotal profit is: %d",profit);
+        printf("\nJobs arranged are:\n");
+        for(i=0;i<njob;i++)
+            printf("%d\t",seq[i]);
+        printf("\n");
+
+}
